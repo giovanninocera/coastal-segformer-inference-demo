@@ -32,5 +32,22 @@ def heuristic_logits(bands: np.ndarray) -> np.ndarray:
 
 
 def logits_to_mask(logits: np.ndarray) -> np.ndarray:
-    return np.argmax(logits, axis=0).astype("uint8")
+    mask = np.argmax(logits, axis=0).astype("uint8")
+    return _majority_filter(mask, iterations=2)
 
+
+def _majority_filter(mask: np.ndarray, iterations: int) -> np.ndarray:
+    out = mask
+    class_ids = range(len(CLASS_NAMES))
+    for _ in range(iterations):
+        votes = []
+        for class_id in class_ids:
+            class_mask = out == class_id
+            count = sum(
+                np.roll(np.roll(class_mask, dy, axis=0), dx, axis=1).astype("uint8")
+                for dy in (-1, 0, 1)
+                for dx in (-1, 0, 1)
+            )
+            votes.append(count)
+        out = np.argmax(np.stack(votes, axis=0), axis=0).astype("uint8")
+    return out

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 - 2026-06-18
+
+- Improved the synthetic multispectral coastal tile.
+- Rebuilt the segmentation triplet with a clean report-style layout and
+  separate legend.
+- Added lightweight majority filtering to reduce salt-and-pepper class noise in
+  the deterministic demo output.
+
 ## 0.1.0 - 2026-06-18
 
 - Added public-safe segmentation inference harness.
@@ -7,4 +15,3 @@
   logits, class summary and input/mask/overlay visualization.
 - Added optional Hugging Face SegFormer adapter.
 - Added unit tests and GitHub Actions workflow.
-

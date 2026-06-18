@@ -1,7 +1,6 @@
 output_dir: outputs/demo
-width: 192
-height: 192
+width: 256
+height: 256
 seed: 31
 tile_size: 64
 stride: 64
-

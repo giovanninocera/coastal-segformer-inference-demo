@@ -2,7 +2,7 @@
 
 Public-safe geospatial AI inference harness for coastal semantic segmentation.
 
-The current `v0.1` is SegFormer-ready but does not publish unpublished PhD data,
+The current demo is SegFormer-ready but does not publish unpublished PhD data,
 labels, model weights or paper-facing metrics. The default run uses a synthetic
 multispectral-like tile and a deterministic lightweight segmentation head to
 demonstrate preprocessing, tiling, stitching and visualization.
