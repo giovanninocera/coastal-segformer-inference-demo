@@ -1,4 +1,4 @@
-output_dir: outputs/demo
+output_dir: outputs/inference
 width: 256
 height: 256
 seed: 31

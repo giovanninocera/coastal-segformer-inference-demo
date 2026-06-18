@@ -1,18 +1,18 @@
-# Coastal SegFormer Inference Demo
+# Coastal SegFormer Inference
 
-Public-safe geospatial AI inference harness for coastal semantic segmentation.
+Geospatial AI inference harness for coastal semantic segmentation.
 
-The current demo is SegFormer-ready but does not publish unpublished PhD data,
-labels, model weights or paper-facing metrics. The default run uses a synthetic
-multispectral-like tile and a deterministic lightweight segmentation head to
-demonstrate preprocessing, tiling, stitching and visualization.
+The default run uses a synthetic multispectral-like tile and a deterministic
+lightweight segmentation head to exercise preprocessing, tiling, stitching and
+visualization. The SegFormer adapter is isolated so that a licensed checkpoint
+can be mounted explicitly when available.
 
 ![Segmentation triplet](assets/segmentation_triplet.png)
 
-## Recruiter signal
+## Scope
 
-This repo is meant to show AI-based EO processing without exposing unpublished
-PhD assets. It demonstrates the engineering contract around inference:
+The harness covers the engineering contract around coastal segmentation
+inference:
 
 - multispectral-like input preparation;
 - tile/window generation;
@@ -24,9 +24,9 @@ PhD assets. It demonstrates the engineering contract around inference:
 ## Quick start
 
 ```powershell
-cd C:\_#\github_portfolio\coastal-segformer-inference-demo
+cd coastal-segformer-inference
 python -m pip install -e .
-coastal-segformer-demo run --config configs/example_demo.yml
+coastal-segformer-inference run --config configs/example_inference.yml
 python -m unittest discover -s tests
 ```
 
@@ -34,7 +34,7 @@ Without installing:
 
 ```powershell
 $env:PYTHONPATH = "src"
-python -m coastal_segformer_demo run --config configs/example_demo.yml
+python -m coastal_segformer_inference run --config configs/example_inference.yml
 python -m unittest discover -s tests
 ```
 
@@ -42,48 +42,32 @@ python -m unittest discover -s tests
 
 | Output | Purpose |
 |---|---|
-| `outputs/demo/synthetic_rgb.png` | Public-safe synthetic input |
-| `outputs/demo/segmentation_triplet.png` | Input, predicted classes and overlay |
-| `outputs/demo/class_summary.csv` | Class fractions |
-| `outputs/demo/metadata.json` | Claim boundary and run metadata |
+| `outputs/inference/synthetic_rgb.png` | Synthetic input |
+| `outputs/inference/segmentation_triplet.png` | Input, predicted classes and overlay |
+| `outputs/inference/class_summary.csv` | Class fractions |
+| `outputs/inference/metadata.json` | Processing scope and run metadata |
 
 ## Important limitation
 
-This repository must not publish unpublished `_ST` data, labels, trained weights
-or paper-facing results. It can demonstrate the inference pattern and the
-geospatial handling around a model, but not leak the thesis dataset.
+This repository must not include restricted `_ST` data, labels, trained weights
+or active research metrics. It covers the inference pattern and the geospatial
+handling around a model.
 
 The current default output must not be described as a trained SegFormer result.
-See `docs/claim_boundary.md`.
+See `docs/inference_scope.md`.
 
 ## Optional SegFormer adapter
 
-`src/coastal_segformer_demo/segformer_adapter.py` shows where a Hugging Face
-SegFormer checkpoint can be mounted after public dataset and checkpoint-license
+`src/coastal_segformer_inference/segformer_adapter.py` shows where a Hugging Face
+SegFormer checkpoint can be mounted after dataset and checkpoint-license
 review. It is not used by the default run because random weights would produce
 meaningless maps.
 
-## Public-safe upgrade options
+## Extension options
 
 | Option | Pros | Cons |
 |---|---|---|
-| Public benchmark dataset | Real data and clearer reproducibility | Need dataset-license check |
-| Synthetic tile fixture | Fully safe and fast | Less impressive visually |
+| Open benchmark dataset | Real data and clearer reproducibility | Need dataset-license check |
+| Synthetic tile fixture | Fast and reproducible | Less informative than real imagery |
 | Pretrained generic SegFormer | Easy to run | May not be EO-specific |
-| Tiny trained model on public data | Best demo if clean | More work and validation burden |
-
-## Current roadmap
-
-- [x] Synthetic multispectral-like fixture.
-- [x] Tiling and stitching.
-- [x] Class-logit inference contract.
-- [x] Input/mask/overlay figure.
-- [x] Tests.
-- [ ] Choose a public segmentation dataset.
-- [ ] Add a real public checkpoint or train a tiny public model.
-- [ ] Add measured public-data metrics.
-
-## Suggested GitHub topics
-
-`segformer`, `semantic-segmentation`, `earth-observation`, `geospatial-ai`,
-`pytorch`, `transformers`, `remote-sensing`
+| Tiny trained model on open data | More realistic validation path | More work and validation burden |

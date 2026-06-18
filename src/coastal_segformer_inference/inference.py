@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from .config import DemoConfig
+from .config import InferenceConfig
 from .predictor import CLASS_NAMES, heuristic_logits, logits_to_mask
 from .render import save_triplet
 from .synthetic import make_synthetic_multispectral
@@ -16,12 +16,12 @@ from .tiling import crop, make_windows, stitch_logits
 
 
 @dataclass(frozen=True)
-class DemoResult:
+class InferenceResult:
     output_dir: Path
     artifacts: list[Path]
 
 
-def run_demo(config: DemoConfig) -> DemoResult:
+def run_inference(config: InferenceConfig) -> InferenceResult:
     out = config.output_dir
     out.mkdir(parents=True, exist_ok=True)
     tile = make_synthetic_multispectral(config.width, config.height, config.seed)
@@ -48,14 +48,13 @@ def run_demo(config: DemoConfig) -> DemoResult:
 
     metadata_path = out / "metadata.json"
     metadata = {
-        "title": "Public-safe coastal segmentation inference demo",
-        "public_safe": True,
-        "claim_boundary": "Synthetic fixture with deterministic head; not a trained SegFormer result.",
+        "title": "Coastal segmentation inference",
+        "data_scope": "synthetic fixture",
+        "processing_note": "Deterministic head; not a trained SegFormer result.",
         "tile_size": config.tile_size,
         "stride": config.stride,
         "windows": len(windows),
         "classes": CLASS_NAMES,
     }
     metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
-    return DemoResult(out, [input_path, triplet_path, summary_path, metadata_path])
-
+    return InferenceResult(out, [input_path, triplet_path, summary_path, metadata_path])

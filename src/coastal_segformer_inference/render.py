@@ -57,10 +57,10 @@ def save_triplet(path: str | Path, rgb: np.ndarray, mask: np.ndarray) -> Path:
     canvas = Image.new("RGB", (width, height), (244, 246, 241))
     draw = ImageDraw.Draw(canvas)
     draw.rectangle((0, 0, width, header_h), fill=(21, 44, 61))
-    draw.text((margin, 18), "Coastal Segmentation Inference Demo", fill=(255, 255, 255), font=_bold_font(24))
+    draw.text((margin, 18), "Coastal Segmentation Inference", fill=(255, 255, 255), font=_bold_font(24))
     draw.text(
         (margin, 52),
-        "Public-safe synthetic tile, deterministic segmentation contract, stitched full-scene output",
+        "Synthetic tile, deterministic segmentation contract, stitched full-scene output",
         fill=(207, 224, 229),
         font=_font(13),
     )
@@ -80,7 +80,7 @@ def save_triplet(path: str | Path, rgb: np.ndarray, mask: np.ndarray) -> Path:
         draw.text((x + 24, y - 1), name, fill=(42, 50, 56), font=_font(12))
     draw.text(
         (margin, y + 30),
-        "Not a trained SegFormer result; the figure validates preprocessing, tiling, stitching and visualization boundaries.",
+        "Not a trained SegFormer result; the figure validates preprocessing, tiling, stitching and visualization contracts.",
         fill=(83, 91, 96),
         font=_font(11),
     )

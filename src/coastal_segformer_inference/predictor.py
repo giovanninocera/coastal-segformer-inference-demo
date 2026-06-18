@@ -15,11 +15,11 @@ CLASS_COLORS = np.array(
 
 
 def heuristic_logits(bands: np.ndarray) -> np.ndarray:
-    """Return deterministic class logits for a public-safe synthetic fixture.
+    """Return deterministic class logits for a synthetic fixture.
 
     This is not a trained model. It emulates the shape and post-processing
-    contract of segmentation inference so the repository can safely demonstrate
-    tiling, stitching and visualization before a public checkpoint is selected.
+    contract of segmentation inference so tiling, stitching and visualization
+    can be exercised before an open checkpoint is selected.
     """
     blue, green, red, nir = bands
     ndwi = (green - nir) / np.maximum(green + nir, 1e-6)

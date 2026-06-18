@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "coastal-segformer-inference-demo"
+name = "coastal-segformer-inference"
 version = "0.1.1"
-description = "Public-safe SegFormer-ready coastal segmentation inference demo."
+description = "SegFormer-ready coastal segmentation inference harness."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -22,7 +22,7 @@ dependencies = [
 segformer = ["torch", "transformers"]
 
 [project.scripts]
-coastal-segformer-demo = "coastal_segformer_demo.cli:main"
+coastal-segformer-inference = "coastal_segformer_inference.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

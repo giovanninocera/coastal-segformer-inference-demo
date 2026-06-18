@@ -4,8 +4,8 @@ from __future__ import annotations
 def build_tiny_random_segformer(num_labels: int = 3):
     """Build a tiny random SegFormer model when torch/transformers are present.
 
-    This helper is intentionally not used by the default demo because random
-    weights would produce meaningless maps. It documents where a public
+    This helper is intentionally not used by the default workflow because random
+    weights would produce meaningless maps. It documents where an open
     checkpoint can be mounted after dataset and license review.
     """
     from transformers import SegformerConfig, SegformerForSemanticSegmentation
@@ -20,4 +20,3 @@ def build_tiny_random_segformer(num_labels: int = 3):
         sr_ratios=[8, 4, 2, 1],
     )
     return SegformerForSemanticSegmentation(config)
-

@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from coastal_segformer_demo.tiling import crop, make_windows, stitch_logits
+from coastal_segformer_inference.tiling import crop, make_windows, stitch_logits
 
 
 class TestTiling(unittest.TestCase):
@@ -23,4 +23,3 @@ class TestTiling(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
