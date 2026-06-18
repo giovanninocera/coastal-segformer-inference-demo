@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this inference demo, please cite it as below."
+title: "Coastal SegFormer Inference Demo"
+authors:
+  - family-names: "Nocera"
+    given-names: "Giovanni Andrea"
+version: "0.1.0"
+date-released: "2026-06-18"
+license: "MIT"
+

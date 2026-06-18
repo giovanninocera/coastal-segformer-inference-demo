@@ -1,0 +1,14 @@
+data/
+outputs/
+models/
+*.pt
+*.pth
+*.safetensors
+*.tif
+*.tiff
+*.h5
+__pycache__/
+.pytest_cache/
+.venv/
+.env
+

@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coastal-segformer-inference-demo"
+version = "0.1.0"
+description = "Public-safe SegFormer-ready coastal segmentation inference demo."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Giovanni Andrea Nocera" }
+]
+dependencies = [
+  "numpy",
+  "PyYAML",
+  "Pillow"
+]
+
+[project.optional-dependencies]
+segformer = ["torch", "transformers"]
+
+[project.scripts]
+coastal-segformer-demo = "coastal_segformer_demo.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+

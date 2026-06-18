@@ -1,0 +1,7 @@
+output_dir: outputs/demo
+width: 192
+height: 192
+seed: 31
+tile_size: 64
+stride: 64
+
