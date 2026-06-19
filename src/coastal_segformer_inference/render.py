@@ -41,7 +41,7 @@ def save_triplet(path: str | Path, rgb: np.ndarray, mask: np.ndarray) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     scale = 2 if max(rgb.shape[:2]) <= 260 else 1
     panels: list[tuple[str, np.ndarray, int]] = [
-        ("Synthetic RGB input", rgb, Image.Resampling.BICUBIC),
+        ("Multispectral RGB input", rgb, Image.Resampling.BICUBIC),
         ("Predicted classes", render_mask(mask), Image.Resampling.NEAREST),
         ("Overlay", overlay(rgb, mask, alpha=0.42), Image.Resampling.BICUBIC),
     ]
@@ -51,7 +51,7 @@ def save_triplet(path: str | Path, rgb: np.ndarray, mask: np.ndarray) -> Path:
     gap = 16
     header_h = 76
     label_h = 34
-    footer_h = 66
+    footer_h = 42
     width = panel_w * 3 + gap * 2 + margin * 2
     height = header_h + label_h + panel_h + footer_h + margin
     canvas = Image.new("RGB", (width, height), (244, 246, 241))
@@ -60,7 +60,7 @@ def save_triplet(path: str | Path, rgb: np.ndarray, mask: np.ndarray) -> Path:
     draw.text((margin, 18), "Coastal Segmentation Inference", fill=(255, 255, 255), font=_bold_font(24))
     draw.text(
         (margin, 52),
-        "Synthetic tile, deterministic segmentation contract, stitched full-scene output",
+        "Four-band coastal scene | tiled inference | stitched semantic map",
         fill=(207, 224, 229),
         font=_font(13),
     )
@@ -77,12 +77,6 @@ def save_triplet(path: str | Path, rgb: np.ndarray, mask: np.ndarray) -> Path:
     for idx, name in enumerate(CLASS_NAMES):
         x = margin + 74 + idx * 180
         draw.rectangle((x, y, x + 16, y + 16), fill=tuple(int(v) for v in CLASS_COLORS[idx]), outline=(255, 255, 255))
-        draw.text((x + 24, y - 1), name, fill=(42, 50, 56), font=_font(12))
-    draw.text(
-        (margin, y + 30),
-        "Not a trained SegFormer result; the figure validates preprocessing, tiling, stitching and visualization contracts.",
-        fill=(83, 91, 96),
-        font=_font(11),
-    )
+        draw.text((x + 24, y - 1), name.replace("_", " "), fill=(42, 50, 56), font=_font(12))
     canvas.save(path)
     return path

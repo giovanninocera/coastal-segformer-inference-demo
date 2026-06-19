@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2 - 2026-06-19
+
+- Replaced the analytic coastal scene with a generalized lagoon geometry.
+- Preserved the source geometry aspect ratio across input, mask and overlay.
+- Removed grid artifacts and constrained vegetation to coherent shore zones.
+- Renamed the third class to `bare_land` and regenerated all graphics.
+
 ## 0.1.1 - 2026-06-18
 
 - Improved the synthetic multispectral coastal tile.

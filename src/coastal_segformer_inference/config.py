@@ -11,7 +11,7 @@ import yaml
 class InferenceConfig:
     output_dir: Path
     width: int = 192
-    height: int = 192
+    height: int = 120
     seed: int = 31
     tile_size: int = 64
     stride: int = 64

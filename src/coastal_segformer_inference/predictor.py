@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 
 
-CLASS_NAMES = ["water", "vegetation", "sand_or_built"]
+CLASS_NAMES = ["water", "vegetation", "bare_land"]
 CLASS_COLORS = np.array(
     [
         [31, 144, 214],
@@ -15,11 +15,11 @@ CLASS_COLORS = np.array(
 
 
 def heuristic_logits(bands: np.ndarray) -> np.ndarray:
-    """Return deterministic class logits for a synthetic fixture.
+    """Return deterministic class logits for a procedural coastal scene.
 
     This is not a trained model. It emulates the shape and post-processing
     contract of segmentation inference so tiling, stitching and visualization
-    can be exercised before an open checkpoint is selected.
+    remain testable without a bundled model checkpoint.
     """
     blue, green, red, nir = bands
     ndwi = (green - nir) / np.maximum(green + nir, 1e-6)

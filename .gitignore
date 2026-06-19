@@ -8,7 +8,9 @@ models/
 *.tiff
 *.h5
 __pycache__/
+*.egg-info/
+build/
+dist/
 .pytest_cache/
 .venv/
 .env
-

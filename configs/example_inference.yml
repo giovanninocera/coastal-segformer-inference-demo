@@ -1,6 +1,6 @@
 output_dir: outputs/inference
 width: 256
-height: 256
+height: 160
 seed: 31
 tile_size: 64
 stride: 64

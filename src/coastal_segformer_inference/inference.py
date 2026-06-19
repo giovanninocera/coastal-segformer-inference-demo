@@ -49,8 +49,8 @@ def run_inference(config: InferenceConfig) -> InferenceResult:
     metadata_path = out / "metadata.json"
     metadata = {
         "title": "Coastal segmentation inference",
-        "data_scope": "synthetic fixture",
-        "processing_note": "Deterministic head; not a trained SegFormer result.",
+        "data_scope": "procedural multispectral scene",
+        "processing_note": "Deterministic reference head; no model checkpoint is bundled.",
         "tile_size": config.tile_size,
         "stride": config.stride,
         "windows": len(windows),

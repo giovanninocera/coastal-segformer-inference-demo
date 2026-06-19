@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coastal-segformer-inference"
-version = "0.1.1"
+version = "0.1.2"
 description = "SegFormer-ready coastal segmentation inference harness."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -26,3 +26,6 @@ coastal-segformer-inference = "coastal_segformer_inference.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+coastal_segformer_inference = ["assets/*.png"]

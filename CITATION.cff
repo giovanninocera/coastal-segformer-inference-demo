@@ -4,6 +4,6 @@ title: "Coastal SegFormer Inference"
 authors:
   - family-names: "Nocera"
     given-names: "Giovanni Andrea"
-version: "0.1.0"
-date-released: "2026-06-18"
+version: "0.1.2"
+date-released: "2026-06-19"
 license: "MIT"
