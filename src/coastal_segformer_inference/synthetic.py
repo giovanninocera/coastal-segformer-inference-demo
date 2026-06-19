@@ -25,11 +25,12 @@ def _smooth_noise(rng: np.random.Generator, width: int, height: int, scale: int)
     return (field - field.mean()) / (field.std() + 1e-6)
 
 
-def _lagoon_mask(width: int, height: int) -> np.ndarray:
-    geometry_path = Path(__file__).with_name("assets") / "lagoon_shape.png"
+def _coastal_zones(width: int, height: int) -> tuple[np.ndarray, np.ndarray]:
+    geometry_path = Path(__file__).with_name("assets") / "coastal_zones.png"
     with Image.open(geometry_path) as source:
         geometry = source.convert("L").resize((width, height), Image.Resampling.LANCZOS)
-    return np.asarray(geometry, dtype="uint8") >= 128
+    zones = np.asarray(geometry, dtype="uint8")
+    return zones > 24, zones >= 168
 
 
 def _dilate(mask: np.ndarray, radius: int) -> np.ndarray:
@@ -42,10 +43,11 @@ def make_synthetic_multispectral(width: int, height: int, seed: int) -> Syntheti
     yy, xx = np.mgrid[0:height, 0:width]
     broad_texture = _smooth_noise(rng, width, height, 30)
     regional_texture = _smooth_noise(rng, width, height, 15)
-    water = _lagoon_mask(width, height)
+    water, lagoon = _coastal_zones(width, height)
+    open_sea = water & ~lagoon
 
     marsh_radius = max(4, min(width, height) // 25)
-    shore_band = _dilate(water, marsh_radius) & ~water
+    shore_band = _dilate(lagoon, marsh_radius) & ~water
     marsh_continuity = regional_texture + 0.35 * np.sin(xx / 34.0) - 0.22 * np.cos(yy / 29.0)
     vegetation = shore_band & (marsh_continuity > -0.15)
     bare_land = ~(water | vegetation)
@@ -58,10 +60,14 @@ def make_synthetic_multispectral(width: int, height: int, seed: int) -> Syntheti
 
     water_texture = 0.018 * broad_texture + 0.007 * np.sin((xx + yy) / 18.0)
     water_gradient = 0.012 * (xx / max(width - 1, 1)) - 0.008 * (yy / max(height - 1, 1))
-    blue[water] = (0.120 + 0.7 * water_texture + water_gradient)[water]
-    green[water] = (0.105 + 0.6 * water_texture + 0.5 * water_gradient)[water]
-    red[water] = (0.046 + 0.35 * water_texture)[water]
-    nir[water] = (0.024 + 0.20 * water_texture)[water]
+    blue[open_sea] = (0.120 + 0.65 * water_texture + water_gradient)[open_sea]
+    green[open_sea] = (0.095 + 0.50 * water_texture + 0.35 * water_gradient)[open_sea]
+    red[open_sea] = (0.040 + 0.25 * water_texture)[open_sea]
+    nir[open_sea] = (0.018 + 0.12 * water_texture)[open_sea]
+    blue[lagoon] = (0.150 + 0.70 * water_texture + 0.5 * water_gradient)[lagoon]
+    green[lagoon] = (0.140 + 0.65 * water_texture + 0.4 * water_gradient)[lagoon]
+    red[lagoon] = (0.058 + 0.32 * water_texture)[lagoon]
+    nir[lagoon] = (0.026 + 0.16 * water_texture)[lagoon]
 
     vegetation_texture = 0.014 * regional_texture + 0.004 * np.cos(xx / 12.0)
     blue[vegetation] = (0.060 + 0.45 * vegetation_texture)[vegetation]

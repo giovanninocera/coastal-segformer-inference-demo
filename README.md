@@ -2,10 +2,11 @@
 
 Geospatial AI inference harness for coastal semantic segmentation.
 
-The default run uses a procedural multispectral-like tile and a deterministic
-lightweight segmentation head to exercise preprocessing, tiling, stitching and
-visualization. The SegFormer adapter is isolated so that a licensed checkpoint
-can be mounted explicitly when available.
+The default run uses a procedural multispectral-like coastal scene with
+connected open-sea and lagoon zones. A deterministic lightweight segmentation
+head exercises preprocessing, tiling, stitching and visualization. The
+SegFormer adapter is isolated so that a licensed checkpoint can be mounted
+explicitly when available.
 
 ![Segmentation triplet](assets/segmentation_triplet.png)
 
