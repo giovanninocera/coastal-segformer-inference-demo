@@ -10,7 +10,7 @@ The default workflow does not use:
 - active research metrics;
 - commercial satellite products.
 
-The current `v0.1` output is a synthetic coastal scene segmented with a
+The default output is a synthetic coastal scene segmented with a
 deterministic lightweight head. It exercises the inference contract:
 
 1. prepare a multispectral-like tile;
@@ -20,6 +20,22 @@ deterministic lightweight head. It exercises the inference contract:
 5. export input, mask, overlay and class summary.
 
 It must not be described as a trained SegFormer result.
+
+## Backend contract
+
+The default backend is `heuristic`. It is deterministic and exists to test the
+engineering path around inference.
+
+The optional backend is `segformer`. It requires:
+
+- `python -m pip install -e .[segformer]`;
+- an explicit `checkpoint` in the YAML config;
+- a checkpoint whose output class count matches the public class contract:
+  `water`, `vegetation`, `bare_land`.
+
+The adapter validates checkpoint logits before stitching. A generic SegFormer
+checkpoint trained on unrelated classes should not be used as evidence of
+coastal segmentation performance.
 
 ## Extension path
 

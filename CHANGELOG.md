@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0 - 2026-06-29
+
+- Repositioned the project as a coastal segmentation inference harness rather
+  than a bundled trained SegFormer model.
+- Added an optional Hugging Face SegFormer backend that loads an explicit
+  checkpoint and validates output class shape before stitching.
+- Added backend configuration fields and adapter tests that do not require the
+  optional ML dependencies.
+- Clarified the model boundary in README and inference-scope documentation.
+
 ## 0.1.3 - 2026-06-19
 
 - Rebuilt the scene from connected internal- and external-water geometries.

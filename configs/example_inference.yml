@@ -1,4 +1,5 @@
 output_dir: outputs/inference
+model_backend: heuristic
 width: 256
 height: 160
 seed: 31

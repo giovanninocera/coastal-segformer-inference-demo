@@ -11,6 +11,7 @@ from PIL import Image
 from .config import InferenceConfig
 from .predictor import CLASS_NAMES, heuristic_logits, logits_to_mask
 from .render import save_triplet
+from .segformer_adapter import SegFormerTilePredictor
 from .synthetic import make_synthetic_multispectral
 from .tiling import crop, make_windows, stitch_logits
 
@@ -26,7 +27,19 @@ def run_inference(config: InferenceConfig) -> InferenceResult:
     out.mkdir(parents=True, exist_ok=True)
     tile = make_synthetic_multispectral(config.width, config.height, config.seed)
     windows = make_windows(config.height, config.width, config.tile_size, config.stride)
-    logits_tiles = [heuristic_logits(crop(tile.bands, window)) for window in windows]
+
+    if config.model_backend == "heuristic":
+        predict_tile = heuristic_logits
+    else:
+        if config.checkpoint is None:
+            raise ValueError("checkpoint is required for SegFormer backend")
+        predict_tile = SegFormerTilePredictor(
+            checkpoint=config.checkpoint,
+            expected_classes=len(CLASS_NAMES),
+            local_files_only=config.local_files_only,
+        )
+
+    logits_tiles = [predict_tile(crop(tile.bands, window)) for window in windows]
     logits = stitch_logits(logits_tiles, windows, config.height, config.width)
     mask = logits_to_mask(logits)
 
@@ -50,7 +63,9 @@ def run_inference(config: InferenceConfig) -> InferenceResult:
     metadata = {
         "title": "Coastal segmentation inference",
         "data_scope": "procedural multispectral scene",
-        "processing_note": "Deterministic reference head; no model checkpoint is bundled.",
+        "model_backend": config.model_backend,
+        "checkpoint": config.checkpoint,
+        "processing_note": "Default backend is deterministic; no model checkpoint is bundled.",
         "tile_size": config.tile_size,
         "stride": config.stride,
         "windows": len(windows),

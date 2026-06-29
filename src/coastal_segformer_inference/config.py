@@ -2,9 +2,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import yaml
+
+
+ModelBackend = Literal["heuristic", "segformer"]
 
 
 @dataclass(frozen=True)
@@ -15,6 +18,9 @@ class InferenceConfig:
     seed: int = 31
     tile_size: int = 64
     stride: int = 64
+    model_backend: ModelBackend = "heuristic"
+    checkpoint: str | None = None
+    local_files_only: bool = False
 
 
 def load_config(path: str | Path) -> InferenceConfig:
@@ -32,6 +38,9 @@ def load_config(path: str | Path) -> InferenceConfig:
         seed=int(raw.get("seed", 31)),
         tile_size=int(raw.get("tile_size", 64)),
         stride=int(raw.get("stride", 64)),
+        model_backend=str(raw.get("model_backend", "heuristic")).lower(),
+        checkpoint=raw.get("checkpoint"),
+        local_files_only=bool(raw.get("local_files_only", False)),
     )
     validate_config(config)
     return config
@@ -44,3 +53,7 @@ def validate_config(config: InferenceConfig) -> None:
         raise ValueError("tile_size and stride must be positive")
     if config.tile_size > max(config.width, config.height):
         raise ValueError("tile_size must fit inside the inference image")
+    if config.model_backend not in {"heuristic", "segformer"}:
+        raise ValueError("model_backend must be 'heuristic' or 'segformer'")
+    if config.model_backend == "segformer" and not config.checkpoint:
+        raise ValueError("checkpoint is required when model_backend is 'segformer'")

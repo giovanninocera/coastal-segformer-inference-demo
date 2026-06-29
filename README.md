@@ -1,12 +1,15 @@
-# Coastal SegFormer Inference
+# Coastal Segmentation Inference Harness
 
-Geospatial AI inference harness for coastal semantic segmentation.
+Geospatial AI inference harness for coastal semantic segmentation, with a
+deterministic default backend and an optional Hugging Face SegFormer checkpoint
+backend.
 
 The default run uses a procedural multispectral-like coastal scene with
 connected open-sea and lagoon zones. A deterministic lightweight segmentation
 head exercises preprocessing, tiling, stitching and visualization. The
 SegFormer adapter is isolated so that a licensed checkpoint can be mounted
-explicitly when available.
+explicitly when available. The public default output is not a trained model
+prediction.
 
 ![Segmentation triplet](assets/segmentation_triplet.png)
 
@@ -55,8 +58,24 @@ reference head keeps preprocessing, tiling, stitching and output contracts
 reproducible; it is not a trained SegFormer result. See
 `docs/inference_scope.md`.
 
-## Optional SegFormer adapter
+## Optional SegFormer backend
 
-`src/coastal_segformer_inference/segformer_adapter.py` defines the Hugging Face
-SegFormer integration boundary and validates checkpoint output shape before
-the common stitching and rendering stages.
+Install optional dependencies and provide an explicit checkpoint:
+
+```powershell
+python -m pip install -e .[segformer]
+```
+
+Example config fields:
+
+```yaml
+model_backend: segformer
+checkpoint: path-or-huggingface-model-id
+local_files_only: false
+```
+
+The adapter loads the checkpoint through Hugging Face Transformers, upsamples
+tile logits to the requested tile size, and validates that the checkpoint class
+count matches this repository's `water`, `vegetation`, `bare_land` output
+contract before stitching. If the checkpoint uses a different class mapping,
+the run fails instead of silently producing misleading maps.
